@@ -1,41 +1,101 @@
-# Lab Solution Files
+# 💄 Ulta Beauty Genie – Copilot Plugin
 
-This folder contains a solution from the [Copilot Developer Camp labs](https://aka.ms/copilotdevcamp). Lab E2 provides the starting solution, which students build in over the course of the following several labs.
+Ulta Beauty Genie is a declarative Copilot extension that delivers **personalized beauty product recommendations** based on user profile data like age, gender, skin type, and preferences.
 
-## Final application
+It uses an OpenAPI-based plugin, a mock API for local testing, and Adaptive Cards to display rich product visuals in Teams Copilot.
 
-When completed, the solution is a declarative agent called "Trey Genie" which provides assistant to the employees of Trey Research. Trey Research is a fictitious consulting company that supplies talent in the software and pharmaceuticals industries. The vision for this demo is to show the full potential of Copilot extensions in a relatable business environment.
+---
 
-### Prompts that work in the completed solution
+## 🧠 Features
 
-  * what trey projects am i assigned to?
-    (NOTE: When authentication is "none" or "API key", the logged in user is assumed to be consultant "Avery Howard". When OAuth is enabled, the logged in user is mapped to user ID 1 in the database, so you will have Avery's projects, etc.)
-  * what trey projects is domi working on?
-  * do we have any trey consultants with azure certifications?
-  * what trey projects are we doing for relecloud?
-  * which trey consultants are working with woodgrove bank?
-  * in trey research, how many hours has avery delivered this month?
-  * please find a trey consultant with python skills who is available immediately
-  * are any trey research consultants available who are AWS certified? (multi-parameter!)
-  * does trey research have any architects with javascript skills? (multi-parameter!)
-  * what trey research designers are working at woodgrove bank? (multi-parameter!)
-   * please charge 10 hours to woodgrove bank in trey research (POST request)
-   * please add sanjay to the contoso project for trey research (POST request with easy to forget entities, hoping to prompt the user; for now they are defaulted)
+- Personalized skincare/makeup suggestions
+- Dynamic adaptive cards with:
+  - Product image
+  - Price, category
+  - ⭐ 1–5 star rating
+  - Link to product
+- Compatible with Microsoft Teams Copilot
+- Local development with `devtunnel` support
 
-If the sample files are installed and accessible to the logged-in user,
+---
 
-   * find my hours spreadsheet and get the hours for woodgrove, then bill the client
-   * make a list of my projects, then write a summary of each based on the statement of work.
+## 🛠️ Project Structure
 
-## API Plugin Features
+```
+├── appPackage/
+│   ├── ulta-declarative-agent.json   # Declarative Copilot definition
+│   ├── ulta-plugin.json              # Plugin metadata + Adaptive Card UI
+│   └── ulta-definition.json          # OpenAPI spec powering the Copilot plugin
+├── mock-api/
+│   └── ULTA_api_server.js            # Node.js mock API with product data
+├── .env.local                        # Local override with devtunnel URL
+├── README.md                         # You're here!
+```
 
-The sample aims to showcase the following features of an API plugin used within a Copilot declarative agent:
+---
 
-  1. API plugin works with any platform that supports REST requests
-  1. Construct queries for specific data using GET requests
-  1. Multi-parameter queries
-  1. Allow updating and adding data using POST requests
-  1. Prompt users before POSTing data; capture missing parameters
-  1. Invoke from Declarative Copilot, allowing general instructions and knowledge, and removing the need to name the plugin on every prompt
-  1. Display rich adaptive cards
-  1. Entra ID login with /me path support
+## 🧪 Running Locally
+
+### 1. Install Mock API Server
+
+```bash
+cd mock-api
+npm install express cors
+node ULTA_api_server.js
+```
+
+It will run on `http://localhost:7072`.
+
+---
+
+### 2. Create Dev Tunnel (once)
+
+```bash
+devtunnel create ulta-api-tunnel -a
+devtunnel port create -p 7072 --protocol http
+```
+
+To start hosting:
+```bash
+devtunnel host ulta-api-tunnel
+```
+
+---
+
+### 3. Update `.env.local`
+
+Replace:
+```env
+OPENAPI_SERVER_URL=https://<your-devtunnel-id>-7072.usw2.devtunnels.ms
+```
+
+---
+
+## 💡 Example Queries
+
+- “I’m 45 and have dry skin. What do you recommend?”
+- “Show me best foundations for oily skin.”
+- “Suggest anti-aging creams for combination skin.”
+
+---
+
+## 🧼 Reset & Redeploy
+
+If things break, try:
+```bash
+rm -rf .localConfigs
+rm -rf appPackage/build
+npx teamsfx provision
+```
+
+---
+
+## 📎 Resources
+
+- [Adaptive Card Designer](https://adaptivecards.io/designer/)
+- [Copilot Plugin Schema](https://aka.ms/json-schemas/copilot-extensions/vNext)
+
+---
+
+## 🧴 Made for Ulta Beauty (Demo Use Only)
+This is a non-production example for demonstrating generative UI in Microsoft 365 Copilot.
