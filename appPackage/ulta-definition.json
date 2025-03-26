@@ -1,0 +1,124 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "version": "1.0.0",
+    "title": "Ulta Beauty API",
+    "description": "API to provide personalized beauty product recommendations."
+  },
+  "servers": [
+    {
+      "url": "https://wz208pp9-7072.usw2.devtunnels.ms/api/",
+      "description": "Live hosted Dev Tunnel"
+    }
+  ],
+  "paths": {
+    "/products/recommendations": {
+      "get": {
+        "operationId": "getRecommendedProducts",
+        "summary": "Get personalized product recommendations",
+        "description": "Returns a curated list of beauty products based on user profile information and optional filters.",
+        "parameters": [
+          { "name": "age", "in": "query", "schema": { "type": "integer", "minimum": 0 }, "required": false },
+          { "name": "gender", "in": "query", "schema": { "type": "string" }, "required": false },
+          { "name": "skinType", "in": "query", "schema": { "type": "string" }, "required": false },
+          { "name": "concerns", "in": "query", "schema": { "type": "array", "items": { "type": "string" } }, "required": false, "style": "form", "explode": true },
+          { "name": "preference", "in": "query", "schema": { "type": "string" }, "required": false },
+          { "name": "brand", "in": "query", "schema": { "type": "string" }, "required": false },
+          { "name": "minPrice", "in": "query", "schema": { "type": "number", "minimum": 0 }, "required": false },
+          { "name": "maxPrice", "in": "query", "schema": { "type": "number", "minimum": 0 }, "required": false },
+          { "name": "finish", "in": "query", "schema": { "type": "string", "enum": ["matte", "dewy", "natural"] }, "required": false }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "productName": { "type": "string" },
+                          "category": { "type": "string" },
+                          "price": { "type": "number" },
+                          "imageUrl": { "type": "string", "format": "uri" },
+                          "description": { "type": "string" },
+                          "brand": { "type": "string" },
+                          "finish": { "type": "string" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/images/analyze": {
+      "post": {
+        "operationId": "analyzeCustomerImage",
+        "summary": "Analyze a customer image to detect skin tone and concerns",
+        "description": "Analyze the uploaded customer image to identify skin tone, skin type, and any visible concerns like acne or wrinkles, and return matching product suggestions.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": { "type": "string", "format": "binary" },
+                  "skinConcerns": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "description": "Optional known skin concerns provided by the user"
+                  }
+                },
+                "required": ["image"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful image analysis",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "object",
+                      "properties": {
+                        "skinType": { "type": "string" },
+                        "skinTone": { "type": "string" },
+                        "concerns": { "type": "array", "items": { "type": "string" } },
+                        "analysisSummary": { "type": "string" },
+                        "recommendationReason": { "type": "string" },
+                        "productMatches": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "productName": { "type": "string" },
+                              "imageUrl": { "type": "string", "format": "uri" },
+                              "description": { "type": "string" }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

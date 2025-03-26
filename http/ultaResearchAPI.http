@@ -1,0 +1,42 @@
+@base_url = http://localhost:7071/api
+
+########## /api/products - product recommendations ##########
+
+### Get recommended products with full profile
+GET {{base_url}}/products/recommendations?age=45&gender=male&skinType=oily&concerns=anti-aging&preference=matte
+
+### Get recommended products (minimal input)
+GET {{base_url}}/products/recommendations?gender=female
+
+### Get recommended products with multiple concerns
+GET {{base_url}}/products/recommendations?age=30&concerns=acne&concerns=dark%20spots&skinType=combination
+
+### Get recommended products with invalid skinType
+GET {{base_url}}/products/recommendations?age=25&skinType=metallic
+
+### Get recommended products filtered by brand
+GET {{base_url}}/products/recommendations?brand=CeraVe
+
+### Get recommended products by price range
+GET {{base_url}}/products/recommendations?minPrice=10&maxPrice=50
+
+### Get recommended products by finish type
+GET {{base_url}}/products/recommendations?finish=dewy
+
+### Get recommended products with all filters
+GET {{base_url}}/products/recommendations?age=35&gender=female&skinType=dry&concerns=wrinkles&preference=hydrating&brand=Neutrogena&minPrice=20&maxPrice=80&finish=matte
+
+
+########## /api/images - image-based analysis ##########
+
+### Analyze uploaded image for skincare insights
+POST {{base_url}}/images/analyze
+Content-Type: multipart/form-data
+
+< image=@path/to/your/image.jpg
+
+### Analyze image with invalid input (no file)
+POST {{base_url}}/images/analyze
+Content-Type: multipart/form-data
+
+< image=@

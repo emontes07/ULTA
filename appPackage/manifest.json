@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.19/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.19",
+  "id": "${{TEAMS_APP_ID}}",
+  "version": "1.0.0",
+  "developer": {
+    "name": "Ulta Beauty AI",
+    "websiteUrl": "https://www.ulta.com",
+    "privacyUrl": "https://www.ulta.com/company/privacy",
+    "termsOfUseUrl": "https://www.ulta.com/company/privacy"
+  },
+  "icons": {
+    "color": "Ulta-192.png",
+    "outline": "Ulta-32.png"
+  },
+  "name": {
+    "short": "Ulta Beauty Genie",
+    "full": "Ulta Personalized Advisor"
+  },
+  "description": {
+    "short": "Get expert beauty product recommendations and support from Ulta.",
+    "full": "This application provides personalized beauty product recommendations and skincare advice using customer profiles to enhance the shopping experience at Ulta Beauty."
+  },
+  "accentColor": "#F47C98",
+  "copilotAgents": {
+    "declarativeAgents": [
+      {
+        "id": "ultagenie",
+        "file": "ulta-declarative-agent.json"
+      }
+    ]
+  },
+  "permissions": [
+    "identity",
+    "messageTeamMembers"
+  ]
+}

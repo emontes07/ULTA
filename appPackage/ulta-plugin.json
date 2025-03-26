@@ -1,0 +1,154 @@
+{
+  "schema_version": "v2.1",
+  "name_for_human": "Ulta Beauty Genie",
+  "description_for_human": "API to provide personalized beauty product suggestions based on user-provided information such as preferences, skin type, and age.",
+  "namespace": "ulta",
+  "functions": [
+    {
+      "name": "getRecommendedProducts",
+      "description": "Returns a curated list of beauty products based on user profile information such as age, skin type, concerns, or product preferences.",
+      "capabilities": {
+        "response_semantics": {
+          "data_path": "$.results",
+          "properties": {
+            "title": "$.productName",
+            "subtitle": "$.category",
+            "url": "$.imageUrl"
+          },
+          "static_template": {
+            "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+            "type": "AdaptiveCard",
+            "version": "1.5",
+            "body": [
+              {
+                "type": "Container",
+                "$data": "${$root}",
+                "items": [
+                  {
+                    "type": "ColumnSet",
+                    "columns": [
+                      {
+                        "type": "Column",
+                        "width": "auto",
+                        "items": [
+                          {
+                            "type": "Image",
+                            "url": "${imageUrl}",
+                            "altText": "${productName}",
+                            "size": "Medium"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "Column",
+                        "width": "stretch",
+                        "items": [
+                          {
+                            "type": "TextBlock",
+                            "text": "${productName}",
+                            "weight": "bolder",
+                            "size": "medium",
+                            "wrap": true
+                          },
+                          {
+                            "type": "TextBlock",
+                            "text": "Category: ${category}",
+                            "wrap": true
+                          },
+                          {
+                            "type": "TextBlock",
+                            "text": "Price: $${price}",
+                            "wrap": true
+                          },
+                          {
+                            "type": "TextBlock",
+                            "text": "Rating:",
+                            "wrap": true
+                          },
+                          {
+                            "type": "TextBlock",
+                            "text": "⭐ ⭐ ⭐ ⭐ ⭐",
+                            "wrap": true,
+                            "isVisible": "${rating == 5}"
+                          },
+                          {
+                            "type": "TextBlock",
+                            "text": "⭐ ⭐ ⭐ ⭐",
+                            "wrap": true,
+                            "isVisible": "${rating == 4}"
+                          },
+                          {
+                            "type": "TextBlock",
+                            "text": "⭐ ⭐ ⭐",
+                            "wrap": true,
+                            "isVisible": "${rating == 3}"
+                          },
+                          {
+                            "type": "TextBlock",
+                            "text": "⭐ ⭐",
+                            "wrap": true,
+                            "isVisible": "${rating == 2}"
+                          },
+                          {
+                            "type": "TextBlock",
+                            "text": "⭐",
+                            "wrap": true,
+                            "isVisible": "${rating == 1}"
+                          },
+                          {
+                            "type": "TextBlock",
+                            "text": "${description}",
+                            "wrap": true,
+                            "spacing": "Small"
+                          },
+                          {
+                            "type": "ActionSet",
+                            "actions": [
+                              {
+                                "type": "Action.OpenUrl",
+                                "title": "View Product",
+                                "url": "${productUrl}"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "runtimes": [
+    {
+      "type": "OpenApi",
+      "auth": {
+        "type": "None"
+      },
+      "spec": {
+        "url": "ulta-definition.json"
+      },
+      "run_for_functions": [
+        "getRecommendedProducts"
+      ]
+    }
+  ],
+  "capabilities": {
+    "localization": {},
+    "conversation_starters": [
+      {
+        "text": "Suggest skincare for oily skin."
+      },
+      {
+        "text": "What products are best for a 45-year-old with dry skin?"
+      },
+      {
+        "text": "Show me hydrating cleansers for sensitive skin."
+      }
+    ]
+  }
+}
