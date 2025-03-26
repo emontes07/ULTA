@@ -36,7 +36,7 @@ app.get("/api/products/recommendations", (req, res) => {
       imageUrl: "https://media.ulta.com/i/ulta/2564751"
     },
     {
-      productName: "Kiehl's Facial Fuel Energizing Moisture Treatment for Men",
+      productName: "Kiehl's Facial Fuel Energizing Moisture Treatment for Men.",
       category: "Moisturizer",
       price: 29.0,
       imageUrl: "https://media.ulta.com/i/ulta/2536676"
